@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: startapp-core
+  security:
+    user:
+      name: admin
+      password: admin
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydatabase
+    username: myuser
+    password: secret
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+  liquibase:
+    change-log: classpath:/db/changelog/database-changelog-master.xml
+  docker:
+    compose:
+      enabled: false  # Включить Docker Compose (запускать Docker Desktop вручную)
+
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+
+vaadin:
+  launch-browser: false # если нужен браузер с фронтом - поменять на true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true

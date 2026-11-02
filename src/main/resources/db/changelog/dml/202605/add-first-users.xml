@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="FStavtsev" id="insert-initial-users">
+    <sql>
+      INSERT INTO users (name, age) VALUES
+      ('Филяс', 26),
+      ('Егор', 37),
+      ('Артем', 25),
+      ('admin', 0);
+    </sql>
+
+    <rollback>
+      <sql>-- no rollback</sql>
+    </rollback>
+  </changeSet>
+
+</databaseChangeLog>

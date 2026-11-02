@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="FStavcev" id="create-chats-table">
+    <sql>
+      CREATE TABLE IF NOT EXISTS chats (
+      id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+      ,title VARCHAR(200) NOT NULL
+      ,type VARCHAR(20) NOT NULL
+      ,last_message VARCHAR(1000)
+      ,last_message_time TIMESTAMP
+      );
+    </sql>
+
+    <rollback>
+      <sql>DROP TABLE IF EXISTS chats CASCADE;</sql>
+    </rollback>
+  </changeSet>
+
+  <changeSet author="FStavcev" id="create-chat-participants-table">
+    <sql>
+      CREATE TABLE IF NOT EXISTS chat_participants (
+      chat_id BIGINT NOT NULL
+      ,user_id BIGINT NOT NULL
+      ,PRIMARY KEY (chat_id, user_id)
+      ,CONSTRAINT fk_chat_participants_chat FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE
+      ,CONSTRAINT fk_chat_participants_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      );
+    </sql>
+
+    <rollback>
+      <sql>DROP TABLE IF EXISTS chat_participants CASCADE;</sql>
+    </rollback>
+  </changeSet>
+
+  <changeSet author="FStavcev" id="create-messages-table">
+    <sql>
+      CREATE TABLE IF NOT EXISTS messages (
+      id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+      ,chat_id BIGINT NOT NULL
+      ,sender_id BIGINT NOT NULL
+      ,content TEXT
+      ,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      ,is_read BOOLEAN DEFAULT FALSE
+      ,CONSTRAINT fk_messages_chat FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE
+      ,CONSTRAINT fk_messages_sender FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE
+      );
+    </sql>
+
+    <rollback>
+      <sql>DROP TABLE IF EXISTS messages CASCADE;</sql>
+    </rollback>
+  </changeSet>
+
+</databaseChangeLog>

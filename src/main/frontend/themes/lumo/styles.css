@@ -1,0 +1,568 @@
+/* Custom styles for lumo theme */
+
+/* Переменные светлой темы (по умолчанию) */
+:root {
+  --bg-color: #f9fafb;
+  --card-bg: #ffffff;
+  --text-color: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --nav-border: #f3f4f6;
+}
+
+/* Тёмная тема */
+body.theme-dark {
+  --bg-color: #111827;
+  --card-bg: #1f2937;
+  --text-color: #f9fafb;
+  --text-secondary: #9ca3af;
+  --border-color: #374151;
+  --nav-border: #4b5563;
+}
+
+/* Глобальные стили */
+body {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Навигация - поддержка тёмной темы */
+.nav-container {
+  background: var(--card-bg) !important;
+  border-right: 1px solid var(--border-color) !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Иконки в левом меню */
+.nav-container vaadin-icon,
+.nav-container .vaadin-icon,
+.nav-container icon {
+  color: var(--text-secondary) !important;
+  transition: color 0.3s ease;
+}
+
+/* Выбранная вкладка - иконка становится ярче */
+.nav-container .nav-item[aria-selected="true"] vaadin-icon,
+.nav-container .nav-item[aria-selected="true"] .vaadin-icon {
+  color: var(--text-color) !important;
+}
+
+/* Текст логотипа и пользователя */
+.nav-container span,
+.nav-container .logo-text,
+.nav-container .user-label {
+  color: var(--text-color) !important;
+  transition: color 0.3s ease;
+}
+
+/* Разделитель в меню */
+.nav-container hr,
+.nav-container [style*="border-top"],
+.nav-container [style*="border-bottom"] {
+  border-color: var(--border-color) !important;
+  transition: border-color 0.3s ease;
+}
+
+/* Иконка пользователя (эмодзи) */
+.user-label::before {
+  filter: grayscale(100%) brightness(150%);
+  transition: filter 0.3s ease;
+}
+
+body.theme-dark .user-label::before {
+  filter: grayscale(100%) brightness(200%);
+}
+
+/* Кнопка выхода */
+.logout-button {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+  border: none !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logout-button:hover {
+  background: #fecaca !important;
+}
+
+body.theme-dark .logout-button {
+  background: #7f1d1d !important;
+  color: #fecaca !important;
+}
+
+body.theme-dark .logout-button:hover {
+  background: #991b1b !important;
+}
+
+/* Убираем отступы у main-content для страницы чата */
+.main-content:has(.chat-view-container),
+.main-content > .chat-view-container {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* Основная область контента */
+.main-content {
+  background: var(--bg-color) !important;
+  padding: 32px !important;
+  transition: padding 0.3s ease, background 0.3s ease;
+}
+
+/* Стили для чата - тёмная тема */
+.chat-view-container {
+  background: var(--bg-color) !important;
+}
+
+.chat-list-panel {
+  background: var(--card-bg) !important;
+  border-right: 1px solid var(--border-color) !important;
+}
+
+.chat-header {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+}
+
+.chat-messages-container {
+  background: linear-gradient(180deg, #a8c0ff 0%, #cfd9df 100%) !important;
+}
+
+body.theme-dark .chat-messages-container {
+  background: linear-gradient(180deg, #1e3a5f 0%, #0f172a 100%) !important;
+}
+
+.chat-input-area {
+  background: var(--card-bg) !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+.chat-info-dialog {
+  background: var(--card-bg) !important;
+}
+
+body.theme-dark .chat-info-dialog {
+  background: #1f2937 !important;
+}
+
+.chat-info-header {
+  background: #5682ab !important;
+}
+
+.chat-bubble-mine {
+  background: #dcf8c6 !important;
+}
+
+body.theme-dark .chat-bubble-mine {
+  background: #1e4d3a !important;
+}
+
+.chat-bubble-theirs {
+  background: var(--card-bg) !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
+}
+
+body.theme-dark .chat-bubble-theirs {
+  background: #374151 !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3) !important;
+}
+
+.chat-item {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.chat-item:hover {
+  background: var(--bg-color) !important;
+}
+
+.chat-avatar {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1 !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+.chat-avatar vaadin-icon,
+.chat-avatar .vaadin-icon,
+.chat-avatar icon {
+  font-size: 1.5rem !important;
+}
+
+.chat-avatar span {
+  font-weight: 600 !important;
+  font-size: 1.2rem !important;
+}
+
+/* Поле ввода сообщения - центрирование */
+.chat-input-area {
+  padding: 0 16px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.chat-input-area vaadin-text-field {
+  flex: 1 !important;
+  margin-right: 12px !important;
+}
+
+.chat-input-area vaadin-text-field::part(input-field) {
+  border-radius: 20px !important;
+  padding: 8px 16px !important;
+  background: #f5f5f5 !important;
+}
+
+.chat-input-area button {
+  flex: 0 0 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Поле ввода сообщения - тёмная тема */
+body.theme-dark .chat-input-area vaadin-text-field::part(input-field) {
+  background: #4b5563 !important;
+  color: var(--text-color) !important;
+}
+
+body.theme-dark .chat-input-area vaadin-text-field::part(placeholder) {
+  color: #ffffff !important;
+  opacity: 0.9 !important;
+}
+
+body.theme-dark .chat-input-area {
+  background: var(--card-bg) !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+.chat-title-text,
+.chat-time-text,
+.chat-last-message-text {
+  transition: color 0.3s ease;
+}
+
+body.theme-dark .chat-title-text {
+  color: var(--text-color) !important;
+}
+
+body.theme-dark .chat-time-text,
+body.theme-dark .chat-last-message-text {
+  color: var(--text-secondary) !important;
+}
+
+body.theme-dark .chat-info-content {
+  color: var(--text-color) !important;
+}
+
+body.theme-dark .chat-detail-row {
+  border-bottom-color: var(--border-color) !important;
+}
+
+/* Информация о пользователе в чате */
+.chat-info-content {
+  color: var(--text-color) !important;
+  transition: color 0.3s ease;
+}
+
+.chat-detail-row {
+  border-bottom: 1px solid #f0f0f0 !important;
+  transition: border-color 0.3s ease;
+}
+
+/* Поле поиска в чатах */
+.chat-search-input {
+  background: var(--bg-color) !important;
+  transition: background-color 0.3s ease;
+}
+
+.chat-search-input::part(input-field) {
+  color: var(--text-color) !important;
+}
+
+.chat-search-input::part(value) {
+  color: var(--text-color) !important;
+}
+
+.chat-search-input::part(placeholder) {
+  color: var(--text-secondary) !important;
+}
+
+.chat-search-input vaadin-icon {
+  color: var(--text-secondary) !important;
+  transition: color 0.3s ease;
+}
+
+/* Поле ввода сообщения в чате */
+.chat-input-area vaadin-text-field::part(input-field) {
+  color: var(--text-color) !important;
+}
+
+.chat-input-area vaadin-text-field::part(value) {
+  color: var(--text-color) !important;
+}
+
+.chat-input-area vaadin-text-field::part(placeholder) {
+  color: var(--text-secondary) !important;
+}
+
+/* === Chat View Layout Fixes === */
+
+/* Основной контейнер чата - занимает всю высоту экрана без отступов */
+.chat-view-container {
+  height: 100vh !important;
+  min-height: 100vh !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+/* Убираем любые отступы у VerticalLayout внутри ChatView */
+.chat-view-container > .vertical-layout {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+/* Убираем отступы у всех вложенных layout */
+.chat-view-container .vertical-layout,
+.chat-view-container .horizontal-layout {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Исключения для внутренних отступов (где они нужны) */
+.chat-header {
+  padding: 0 16px !important;
+}
+
+.chat-messages-container {
+  padding: 16px !important;
+}
+
+.chat-input-area {
+  padding: 0 16px !important;
+}
+
+.chat-list-panel {
+  padding: 0 !important;
+}
+
+/* Левая панель с чатами - фиксированная высота */
+.chat-list-panel {
+  height: 100% !important;
+  min-height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* Правая панель с сообщениями - занимает оставшееся место */
+.chat-main-panel {
+  height: 100% !important;
+  min-height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* Область сообщений - авто-скролл */
+.chat-messages-container {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Область ввода сообщения - фиксированная высота */
+.chat-input-area {
+  flex: 0 0 auto !important;
+}
+
+/* Область чата (заголовок + сообщения + ввод) */
+.chat-area {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  flex: 1 !important;
+}
+
+/* Заголовок чата - фиксированная высота */
+.chat-header {
+  flex: 0 0 auto !important;
+}
+
+/* Убираем лишние отступы у VerticalLayout в чате */
+.chat-view-container > .vertical-layout {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Убираем отступы у контейнеров чата */
+.chat-list-panel > .vertical-layout,
+.chat-main-panel > .horizontal-layout,
+.chat-area {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Фикс для поиска в чатах */
+.chat-search-input {
+  margin: 0 12px 8px 12px !important;
+  width: 100% !important;
+  background: transparent !important;
+}
+
+.chat-search-input::part(input-field) {
+  border-radius: 20px !important;
+  padding: 8px 16px !important;
+  background: #f5f5f5 !important;
+  color: var(--text-color) !important;
+  max-width: 260px !important;
+  margin: 0 0 0 0px !important;
+}
+
+.chat-search-input::part(value) {
+  color: var(--text-color) !important;
+}
+
+.chat-search-input::part(placeholder) {
+  color: var(--text-secondary) !important;
+}
+
+.chat-search-input vaadin-icon {
+  color: var(--text-secondary) !important;
+  transition: color 0.3s ease;
+}
+
+/* Поле поиска - тёмная тема */
+body.theme-dark .chat-search-input::part(input-field) {
+  background: #4b5563 !important;
+  color: var(--text-color) !important;
+}
+
+body.theme-dark .chat-search-input::part(placeholder) {
+  color: #e5e7eb !important;
+}
+
+body.theme-dark .chat-search-input vaadin-icon {
+  color: #d1d5db !important;
+}
+
+/* Пустое состояние чата - красивая центрированная надпись */
+.empty-chat-message {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+  color: #fff !important;
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  opacity: 0.9 !important;
+}
+
+body.theme-dark .empty-chat-message {
+  color: #e5e7eb !important;
+}
+
+/* Кнопка "Назад" в шапке чата */
+.chat-back-button {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: background 0.3s ease !important;
+  padding: 0 !important;
+}
+
+.chat-back-button:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.chat-back-button vaadin-icon {
+  color: #fff !important;
+  font-size: 1.2rem !important;
+}
+
+body.theme-dark .chat-back-button {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.theme-dark .chat-back-button:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Кнопка информации в шапке чата */
+.chat-info-button {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: background 0.3s ease !important;
+  padding: 0 !important;
+}
+
+.chat-info-button:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.chat-info-button vaadin-icon {
+  color: #fff !important;
+  font-size: 1.2rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+body.theme-dark .chat-info-button {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.theme-dark .chat-info-button:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Search input (общий стиль для других мест) */
+.search-input {
+  border-radius: 10px !important;
+  border: 2px solid #e5e7eb !important;
+  padding: 12px 16px !important;
+  transition: all var(--transition-speed) ease !important;
+  width: 100%;
+}
+
+.search-input:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+  outline: none !important;
+}
+
+/* Контейнер списка чатов - занимает всё доступное место */
+.chat-list-panel > div:last-child {
+  flex: 1 !important;
+  overflow-y: auto !important;
+}

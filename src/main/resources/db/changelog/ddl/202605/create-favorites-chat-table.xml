@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="FStavcev" id="add-user-id-to-chats">
+    <addColumn tableName="chats">
+      <column name="user_id" type="BIGINT">
+        <constraints nullable="true"/>
+      </column>
+    </addColumn>
+
+    <addForeignKeyConstraint
+      baseTableName="chats"
+      baseColumnNames="user_id"
+      constraintName="fk_chats_user"
+      referencedTableName="users"
+      referencedColumnNames="id"
+      onDelete="CASCADE"
+    />
+
+    <createIndex tableName="chats" indexName="idx_chats_user_id">
+      <column name="user_id"/>
+    </createIndex>
+
+    <rollback>
+      <sql>
+        ALTER TABLE chats DROP COLUMN IF EXISTS user_id;
+        DROP INDEX IF EXISTS idx_chats_user_id;
+        ALTER TABLE chats DROP CONSTRAINT IF EXISTS fk_chats_user;
+      </sql>
+    </rollback>
+  </changeSet>
+
+  <changeSet author="FStavcev" id="update-type-column-length">
+    <modifyDataType
+      tableName="chats"
+      columnName="type"
+      newDataType="VARCHAR(50)"
+    />
+
+    <rollback>
+      <sql>
+        ALTER TABLE chats ALTER COLUMN type TYPE VARCHAR(20);
+      </sql>
+    </rollback>
+  </changeSet>
+
+</databaseChangeLog>

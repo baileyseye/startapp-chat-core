@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route #это способ открыть твой Service наружу, построить внешний маршрут. Надо поменять на Ingress
+metadata:
+  name: startapp-chat-core-route
+  labels:
+    app: startapp-chat-core
+spec:
+  to:
+    kind: Service #Route всегда ссылается на Service
+    name: startapp-chat-core-service
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

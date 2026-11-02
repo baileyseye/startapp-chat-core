@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  labels:
+    app: startapp-chat-core
+data:
+  SPRING_PROFILES_ACTIVE: "local"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-service:5432/mydatabase"
+  SPRING_DATASOURCE_USERNAME: "myuser"
+  SPRING_DATASOURCE_PASSWORD: "secret"
+  SERVER_PORT: "8080"
+  LOGGING_LEVEL_ROOT: "DEBUG"
+  LOGGING_LEVEL_ORG_HIBERNATE_SQL: "DEBUG"
+  SPRING_JPA_SHOW_SQL: "true"

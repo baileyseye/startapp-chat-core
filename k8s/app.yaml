@@ -1,0 +1,63 @@
+apiVersion: v1 #версия кубера, из которой он понимает как парсить этот манифест
+kind: Service #тип манифеста, его классификация
+metadata:
+  name: startapp-chat-core-service #именно здесь задается DNS имя сервису внутри кластера
+  labels:
+    app: startapp-chat-core #метки нужны для kubectl get all -l app=startapp-chat-core и прочее
+spec:
+  selector: #Определяет на какие поды с какой меткой направлять трафик. Сервис ищет поды по этой метке
+    app: startapp-chat-core #должен совпадать с metadata.labels (kubectl get endpoints)
+  ports: #порты которые открывает этот сервис
+    - port: 8080 #порт на котором сервис слушает ВНУТРИ кластера
+      targetPort: 8080 #порт внутри контейнера куда сервис будет направлять трафик
+      name: http #имя для порта, чтобы ссылаться на них из других мест типа истио, или для метрик
+  type: ClusterIP #Создаёт сервис, доступный ТОЛЬКО внутри кластера. Это тип по умолчанию. Сервис получает виртуальный IP из внутренней сети кластера. Из интернета в него не достучаться. Если нужен доступ снаружи - NodePort или LoadBalancer.
+
+---
+apiVersion: apps/v1 # Deployment живёт в группе apps
+kind: Deployment #Управляет жизненным циклом подов: создание, обновление, откат, масштабирование. Иначе кубер создаст голый под
+metadata:
+  name: startapp-chat-core #именно по этому мы делаем kubectl rollout restart deployment/startapp-chat-core
+  labels:
+    app: startapp-chat-core
+spec:
+  replicas: 1 #количество экземпляров пода в моменте
+  selector:
+    matchLabels: #По сути "какими лейблами помечать поды, которыми я управляю".  должен СТРОГО СОВПАДАТЬ с лейблами в template.metadata.labels
+      app: startapp-chat-core #Не даёт деплойменту перехватить чужие поды c другой меткой
+  template: #Шаблон для создания подов.
+    metadata:
+      labels:
+        app: startapp-chat-core
+    spec:
+      containers: #Список контейнеров, которые будут запущены в поде (например сюда можно вписать sidecar к основному)
+        - name: app
+          image: startapp-chat-core:latest
+          imagePullPolicy: Never #чтобы кластер использовал только что собранный образ, а не качал старый из хаба. Только для локалки
+          ports:
+            - containerPort: 8080 #в основном для истио и прометеуса
+              name: http
+          envFrom: #Инжектит переменные окружения в контейнер из конфигмапы или секрета целым блоком.
+            - configMapRef:
+                name: app-config #в configmap.yaml metadata.name.label
+          resources:
+            requests: #Минимальные ресурсы, которые контейнеру нужны для работы.
+              memory: "512Mi" #Без этой секции под может попасть на перегруженную ноду и упасть по OOM.
+              cpu: "250m"
+            limits:
+              memory: "1Gi" #Если контейнер превысит 1 гибибайт - OOM Killer прибьёт процесс. Контейнер перезапустится. Без лимитов контейнер может сожрать всю память ноды и уронить другие поды.
+              cpu: "1000m"
+          livenessProbe: # Проверяет, ЖИВ ли контейнер. Если нет - перезапускает.
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60 #Задержка в секундах перед ПЕРВОЙ проверкой.
+            periodSeconds: 10 #Как часто kubelet проверяет контейнер после первой пробы
+            timeoutSeconds: 5 #Если приложение тупит и не отвечает 5 секунд - проба считается проваленной.
+          readinessProbe: #Проверяет, ГОТОВ ли контейнер принимать трафик. Пока под не скажет что он готов сервис будет слать трафик на другие поды.
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 3

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="FStavcev" id="create-favorites-chat-template">
+    <sql>
+      -- Создаем шаблон чата "Избранное" (без user_id, будет копироваться для каждого пользователя)
+      INSERT INTO chats (title, type, user_id, is_deletable, last_message, last_message_time)
+      VALUES ('Избранное', 'favorites', NULL, false, NULL, NULL)
+      ON CONFLICT DO NOTHING;
+    </sql>
+
+    <rollback>
+      <sql>
+        DELETE FROM chats WHERE type = 'favorites' AND user_id IS NULL;
+      </sql>
+    </rollback>
+  </changeSet>
+
+</databaseChangeLog>

@@ -53,3 +53,5 @@ node_modules/
 
 # Vaadin bundles
 src/main/bundles/
+
+KODA.md
